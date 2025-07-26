@@ -1,4 +1,4 @@
-// stores/taskStore.ts
+
 import { create } from "zustand";
 import { supabase } from "@/utils/supbase";
 import { StateCreator } from "zustand"; 
@@ -73,36 +73,36 @@ const taskStoreCreator: StateCreator<TaskState> = (set) => ({
       set({ error: error.message, loading: false });
     } else if (data && data.length > 0) {
       set((state) => ({
-        tasks: [...state.tasks, data[0]], // Add the new task to the existing list
+        tasks: [...state.tasks, data[0]], 
         loading: false,
       }));
     } else {
-      set({ error: "Failed to add task: No data returned.", loading: false }); // Handle no data returned
+      set({ error: "Failed to add task: No data returned.", loading: false }); 
     }
   },
 
   updateTask: async (taskId, updates) => {
-    set({ loading: true, error: null }); // Set loading to true, clear previous errors
+    set({ loading: true, error: null });
     const { error } = await supabase
       .from("tasks")
       .update(updates) 
       .eq("id", taskId); 
 
     if (error) {
-      set({ error: error.message, loading: false }); // Set error and stop loading
+      set({ error: error.message, loading: false });
     } else {
       set((state) => ({
         tasks: state.tasks.map(
-          (task) => (task.id === taskId ? { ...task, ...updates } : task) // Apply updates to the state
+          (task) => (task.id === taskId ? { ...task, ...updates } : task) 
         ),
-        loading: false, // Stop loading
+        loading: false, 
       }));
     }
   },
 
   deleteTask: async (taskId) => {
-    set({ loading: true, error: null }); // Set loading to true, clear previous errors
-    const { error } = await supabase.from("tasks").delete().eq("id", taskId); // Delete the task by its ID
+    set({ loading: true, error: null });
+    const { error } = await supabase.from("tasks").delete().eq("id", taskId); 
 
     if (error) {
       set({ error: error.message, loading: false });
