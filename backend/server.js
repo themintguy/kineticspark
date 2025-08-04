@@ -64,17 +64,17 @@ app.post("/api/signup", async (req, res) => {
       },
     });
 
-    const verificationLink = `${process.env.CORS_ORIGIN}/api/verify?token=${verificationToken}`;
+   const verificationLink = `${process.env.CORS_ORIGIN}/auth/verify?token=${verificationToken}`;
 
-    await transporter.sendMail({
-      from: `"Kinetic Spark" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: "Verify your email address",
-      html: `
-        <p>Please click the following link to verify your email:</p>
-        <a href="${verificationLink}">${verificationLink}</a>
-      `,
-    });
+   await transporter.sendMail({
+     from: `"Kinetic Spark" <${process.env.EMAIL_USER}>`,
+     to: email,
+     subject: "Verify your email address",
+     html: `
+    <p>Please click the following link to verify your email:</p>
+    <a href="${verificationLink}">${verificationLink}</a>
+  `,
+   });
 
     res.status(201).json({
       message: "User created. Please check your email to verify your account.",
