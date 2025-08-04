@@ -149,8 +149,33 @@ app.get("/api/verify-email", async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).send("Invalid or expired verification token.");
     }
+    
+    const loginRedirectUrl = `${process.env.CORS_ORIGIN}/auth/login`;
 
-    res.send("Email successfully verified! You can now log in.");
+    const htmlResponse = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Email Verified</title>
+          <meta http-equiv="refresh" content="3; url=${loginRedirectUrl}">
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; padding: 50px; background-color: #f0f4f8; }
+            .container { max-width: 600px; margin: auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+            h1 { color: #2d3748; }
+            p { color: #4a5568; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Email Successfully Verified!</h1>
+            <p>You can now log in to your account.</p>
+            <p>Redirecting to the login page in 3 seconds...</p>
+          </div>
+        </body>
+      </html>
+    `;
+
+    res.status(200).send(htmlResponse);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error during verification.");
