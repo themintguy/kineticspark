@@ -16,30 +16,32 @@ export default function Page() {
     setloading(true);
     seterror(null);
 
-    try {
-      const response = await axios.post("http://localhost:3131/api/signup", {
-        email,
-        password,
-      });
-
-      if (response.status === 201) {
-        alert("Successful signup! You can now log in with your new account.");
-        router.push("/auth/login");
-      }
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        seterror(
-          err.response?.data?.message ||
-            "An unexpected error occurred during signup."
-        );
-      } else if (err instanceof Error) {
-        seterror(err.message || "An unexpected error occurred.");
-      } else {
-        seterror("An unknown error occurred.");
-      }
-    } finally {
-      setloading(false);
-    }
+   try {
+     const response = await axios.post(
+       `${process.env.NEXT_PUBLIC_API_URL}/signup`,
+       {
+         email,
+         password,
+       }
+     );
+     if (response.status === 201) {
+       alert("Successful signup! You can now log in with your new account.");
+       router.push("/auth/login");
+     }
+   } catch (err: unknown) {
+     if (axios.isAxiosError(err)) {
+       seterror(
+         err.response?.data?.message ||
+           "An unexpected error occurred during signup."
+       );
+     } else if (err instanceof Error) {
+       seterror(err.message || "An unexpected error occurred.");
+     } else {
+       seterror("An unknown error occurred.");
+     }
+   } finally {
+     setloading(false);
+   }
   };
 
   return (

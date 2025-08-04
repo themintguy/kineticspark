@@ -16,32 +16,33 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    try {
-      const response = await axios.post("http://localhost:3131/api/login", {
-        email,
-        password,
-      });
+ try {
+   const response = await axios.post(
+     `${process.env.NEXT_PUBLIC_API_URL}/login`,
+     {
+       email,
+       password,
+     }
+   );
 
-      const { token, email: userEmail, userId } = response.data;
+   const { token, email: userEmail, userId } = response.data;
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("userEmail", userEmail);
-      localStorage.setItem("userId", userId);
+   localStorage.setItem("token", token);
+   localStorage.setItem("userEmail", userEmail);
+   localStorage.setItem("userId", userId);
 
-      router.push("/dashboard");
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err)) {
-        setError(
-          err.response?.data?.message || "An unexpected error occurred."
-        );
-      } else if (err instanceof Error) {
-        setError(err.message || "An unexpected error occurred during login.");
-      } else {
-        setError("An unknown error occurred.");
-      }
-    } finally {
-      setLoading(false);
-    }
+   router.push("/dashboard");
+ } catch (err: unknown) {
+   if (axios.isAxiosError(err)) {
+     setError(err.response?.data?.message || "An unexpected error occurred.");
+   } else if (err instanceof Error) {
+     setError(err.message || "An unexpected error occurred during login.");
+   } else {
+     setError("An unknown error occurred.");
+   }
+ } finally {
+   setLoading(false);
+ }
   };
 
   return (
