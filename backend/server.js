@@ -36,6 +36,7 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+
 app.post("/api/signup", async (req, res) => {
   const { email, password } = req.body;
 
@@ -63,7 +64,7 @@ app.post("/api/signup", async (req, res) => {
       },
     });
 
-    const verificationLink = `${process.env.CORS_ORIGIN}/api/verify-email?token=${verificationToken}`;
+    const verificationLink = `${process.env.CORS_ORIGIN}/api/verify?token=${verificationToken}`;
 
     await transporter.sendMail({
       from: `"Kinetic Spark" <${process.env.EMAIL_USER}>`,
@@ -149,7 +150,7 @@ app.get("/api/verify-email", async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).send("Invalid or expired verification token.");
     }
-    
+
     const loginRedirectUrl = `${process.env.CORS_ORIGIN}/auth/login`;
 
     const htmlResponse = `

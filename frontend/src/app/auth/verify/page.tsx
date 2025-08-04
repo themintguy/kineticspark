@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -25,7 +26,7 @@ export default function VerifyEmailPage() {
     const verifyEmail = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/verify-email?token=${token}`
+          `${process.env.NEXT_PUBLIC_API_URL}/verify?token=${token}`
         );
         setStatus("success");
         setMessage(response.data);
