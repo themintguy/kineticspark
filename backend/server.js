@@ -1,4 +1,3 @@
-
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
@@ -7,7 +6,6 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import pool from "./db.js";
-import path from "path";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,7 +17,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.static(path.join(process.cwd(), "public")));
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -66,7 +63,7 @@ app.post("/api/signup", async (req, res) => {
       },
     });
 
-    const verificationLink = `${process.env.FRONTEND_URI}/api/verify-email?token=${verificationToken}`;
+    const verificationLink = `${process.env.CORS_ORIGIN}/api/verify-email?token=${verificationToken}`;
 
     await transporter.sendMail({
       from: `"Kinetic Spark" <${process.env.EMAIL_USER}>`,
@@ -153,32 +150,7 @@ app.get("/api/verify-email", async (req, res) => {
       return res.status(404).send("Invalid or expired verification token.");
     }
 
-    const loginRedirectUrl = `${process.env.CORS_ORIGIN}/auth/login`;
-
-    const htmlResponse = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Email Verified</title>
-          <meta http-equiv="refresh" content="2; url=${loginRedirectUrl}">
-          <style>
-            body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f0f4f8; }
-            .container { max-width: 600px; margin: auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-            h1 { color: #2d3748; }
-            p { color: #4a5568; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1>Email Successfully Verified!</h1>
-            <p>You can now log in to your account.</p>
-            <p>Redirecting you in 2 seconds...</p>
-          </div>
-        </body>
-      </html>
-    `;
-
-    res.status(200).send(htmlResponse);
+    res.send("Email successfully verified! You can now log in.");
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error during verification.");
