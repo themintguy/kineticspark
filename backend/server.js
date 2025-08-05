@@ -158,7 +158,7 @@ app.get("/api/verify-email", async (req, res) => {
       <html>
         <head>
           <title>Email Verified</title>
-          <meta http-equiv="refresh" content="3; url=${loginRedirectUrl}">
+          <meta http-equiv="refresh" content="2; url=${loginRedirectUrl}">
           <style>
             body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; padding: 50px; background-color: #f0f4f8; }
             .container { max-width: 600px; margin: auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
