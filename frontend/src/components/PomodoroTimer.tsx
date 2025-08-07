@@ -94,7 +94,7 @@ export default function PomodoroTimer() {
             </button>
           </div>
 
-          <div className="text-5xl font-mono font-bold text-gray-900 dark:text-white mb-8">
+          <div className="text-4xl font-mono font-bold text-gray-900 dark:text-white mb-8">
             {formatTime(timeLeft)}
           </div>
 
